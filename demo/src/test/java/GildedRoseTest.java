@@ -142,4 +142,43 @@ public class GildedRoseTest {
         assertEquals(0, sulfuras.getSellIn());
     }
 
+    @Test
+    public void testNormalItemOverTime() {
+		GildedRose inn = new GildedRose();
+        inn.setItem(new Item("Vest", 10, 20));
+
+        for (int i = 1; i < 12; i++) {
+            inn.oneDay();
+			int expectedQuality = (20 - i);
+
+			if (i > 10) {
+				expectedQuality -= (i - 10);
+			}
+
+			int expectedSellIn = 10 - i;
+
+            assertEquals("Sell-in should decrease by 1 each day.", expectedSellIn, inn.getItems().get(0).getSellIn());
+            assertEquals("Quality should degrade correctly based on sell-in date.", expectedQuality, inn.getItems().get(0).getQuality());
+		}
+    }
+
+	@Test
+	public void testBrieOvertime() {
+		GildedRose inn = new GildedRose();
+        inn.setItem(new Item("Aged Brie", 5, 10));
+
+		for (int i = 1; i <= 10; i++) {
+			inn.oneDay();
+			int expectedQuality = 10 + i;
+			if (i > 5) { 
+				expectedQuality += (i - 5);
+			}
+			int expectedSellIn = 5 - i;
+
+			System.out.println(inn.getItems().get(0).getSellIn());
+		
+            assertEquals("Sell-in should decrease by 1 each day.", expectedSellIn, inn.getItems().get(0).getSellIn());
+            assertEquals("Quality should increase correctly based on sell-in date.", expectedQuality, inn.getItems().get(0).getQuality());		
+		}
+	}
 }
